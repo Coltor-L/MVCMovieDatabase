@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Data;
 using WebApplication.Models;
@@ -17,9 +18,32 @@ namespace WebApplication.Controllers
         }
 
         // GET: Movies
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string movieGenre, string searchString)
         {
-            return View(await _context.Movie.ToListAsync());
+            var genreQuery = from m in _context.Movie orderby m.Genre select m.Genre;
+            
+            var movies = from m in _context.Movie select m;
+
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+                movies = movies.Where(s => s.Title.ToLower().Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(movieGenre))
+            {
+                movieGenre = movieGenre.ToLower();
+                movies = movies.Where(x => x.Genre.ToLower() == movieGenre);
+            }
+
+            var moviesGenreVM = new MovieGenreViewModel
+            {
+                Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                Movies = await movies.ToListAsync()
+            };
+            
+            return View(moviesGenreVM);
         }
 
         // GET: Movies/Details/5
