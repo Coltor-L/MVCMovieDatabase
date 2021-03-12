@@ -17,7 +17,8 @@ namespace WebApplication.Migrations
                     Title = table.Column<string>(type: "text", nullable: true),
                     ReleaseDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Genre = table.Column<string>(type: "text", nullable: true),
-                    Price = table.Column<decimal>(type: "numeric", nullable: false)
+                    Price = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
+                    Rating = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

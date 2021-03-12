@@ -10,7 +10,7 @@ using WebApplication.Data;
 namespace WebApplication.Migrations
 {
     [DbContext(typeof(MvcMovieContext))]
-    [Migration("20210310032806_InitialCreate")]
+    [Migration("20210312025417_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,10 @@ namespace WebApplication.Migrations
                         .HasColumnType("text");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18, 2");
+
+                    b.Property<string>("Rating")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("timestamp without time zone");
